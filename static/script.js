@@ -1,23 +1,29 @@
-var bee = document.getElementById("cursor");
 document.addEventListener("mousemove", getMouse); 
+document.addEventListener("click", toggle);
+var follower = document.getElementById("cursor");
 
-bee.style.position = "absolute"; //css		
-var beepos = {x:0, y:0};
+follower.style.position = "absolute"; //css	
+var position = {x:0, y:0};
+var mouse = {x:0, y:0};
+var follow = true;
 
-var mouse = {x:0, y:0}; //mouse.x, mouse.y
+setInterval(update, 50);
 
 function getMouse(e){
-    mouse.x = e.pageX-100;
-    mouse.y = e.pageY-100;
+	if (follow) {
+		mouse.x = e.pageX-75;
+    	mouse.y = e.pageY-75;
+	}
 }
 
-setInterval(followMouse, 50);
+function toggle(e){
+	follow = !follow;
+	getMouse(e);
+}
 
-function followMouse(){
-    var distX = mouse.x - beepos.x;
-    var distY = mouse.y - beepos.y;
-    beepos.x += distX/5;
-    beepos.y += distY/2;
-    bee.style.left = beepos.x + "px";
-    bee.style.top = beepos.y + "px";
+function update(){
+    position.x += (mouse.x - position.x)/10;
+    position.y += (mouse.y - position.y)/8;
+    follower.style.left = position.x + "px";
+    follower.style.top = position.y + "px";
 }
